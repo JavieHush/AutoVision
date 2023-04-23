@@ -1,0 +1,22 @@
+Server:
+  RunMode: debug
+  HttpPort: 8080
+  ReadTimeout: 60
+  WriteTimeout: 60
+App:
+  DefaultPageSize: 10
+  MaxPageSize: 100
+  LogSavePath: storage/logs
+  LogFileName: app
+  LogFileExt: .log
+Database:
+  DBType: mysql
+  Username: legion2019  # replace it with your own username
+  Password: ZJZ20010906vie.  # replace it with your own password
+  Host: 192.168.137.118:3306
+  DBName: main
+  TablePrefix: bs_
+  Charset: utf8
+  ParseTime: True
+  MaxIdleConns: 10
+  MaxOpenConns: 30
