@@ -13,7 +13,7 @@ Database:
   DBType: mysql
   Username: legion2019  # replace it with your own username
   Password: ZJZ20010906vie.  # replace it with your own password
-  Host: 192.168.137.118:3306
+  Host: 192.168.137.118:3306  # replace it with your own host
   DBName: main
   TablePrefix: bs_
   Charset: utf8

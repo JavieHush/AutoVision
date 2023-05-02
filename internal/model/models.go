@@ -1,7 +1,7 @@
 package model
 
 import (
-	"gorm.io/gorm"
+	"github.com/jinzhu/gorm"
 	"time"
 )
 
@@ -20,6 +20,49 @@ type Models struct {
 	Users     Users    `gorm:"foreignKey:UserID"`
 }
 
-func (Models) TableName() string {
+func (Models) TableName() string { // TableName is automatically used by gorm
 	return "models"
+}
+
+/*
+	func for users.
+*/
+
+func (m Models) Delete(db *gorm.DB) error {
+	return db.Where("DeletedAt is null").Where("ID = ? ", m.Model.ID).Delete(&m).Error // DeletedAt field will be automatically set to current time
+}
+
+// get model list
+func (m Models) List(db *gorm.DB, pageOffset, pageSize int) ([]*Models, error) {
+	var models []*Models
+	var err error
+	if pageOffset >= 0 && pageSize > 0 {
+		db = db.Offset(pageOffset).Limit(pageSize)
+	}
+	// find certain user's all models that are not deleted by userID.
+	// todo: is it right here using UserID?
+	if err = db.Where("DeletedAt is null").Where("UserID = ?", m.UserID).Preload("Users").Find(&models).Error; err != nil {
+		return nil, err
+	}
+
+	return models, nil
+}
+
+// GetModel get certain model by ID
+// todo: notice return value should be *Models or Models
+func (m Models) GetModel(db *gorm.DB) (*Models, error) {
+	var target Models
+	var err error
+	if err = db.Where("DeletedAt is null").Where("ID = ?", m.ID).First(&target).Error; err != nil {
+		return &Models{}, err
+	}
+	return &target, nil
+}
+
+/*
+	func for sys
+*/
+
+func (m Models) Create(db *gorm.DB) error {
+	return db.Create(&m).Error
 }
