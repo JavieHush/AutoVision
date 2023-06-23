@@ -29,10 +29,10 @@ func (Models) TableName() string { // TableName is automatically used by gorm
 */
 
 func (m Models) Delete(db *gorm.DB) error {
-	return db.Where("DeletedAt is null").Where("ID = ? ", m.Model.ID).Delete(&m).Error // DeletedAt field will be automatically set to current time
+	return db.Where("deleted_at is null").Where("id = ? ", m.Model.ID).Delete(&m).Error // DeletedAt field will be automatically set to current time
 }
 
-// get model list
+// List get model list
 func (m Models) List(db *gorm.DB, pageOffset, pageSize int) ([]*Models, error) {
 	var models []*Models
 	var err error
@@ -41,7 +41,7 @@ func (m Models) List(db *gorm.DB, pageOffset, pageSize int) ([]*Models, error) {
 	}
 	// find certain user's all models that are not deleted by userID.
 	// todo: is it right here using UserID?
-	if err = db.Where("DeletedAt is null").Where("UserID = ?", m.UserID).Preload("Users").Find(&models).Error; err != nil {
+	if err = db.Where("deleted_at is null").Where("user_id = ?", m.UserID).Preload("Users").Find(&models).Error; err != nil {
 		return nil, err
 	}
 
@@ -53,7 +53,7 @@ func (m Models) List(db *gorm.DB, pageOffset, pageSize int) ([]*Models, error) {
 func (m Models) GetModel(db *gorm.DB) (*Models, error) {
 	var target Models
 	var err error
-	if err = db.Where("DeletedAt is null").Where("ID = ?", m.ID).First(&target).Error; err != nil {
+	if err = db.Where("deleted_at is null").Where("id = ?", m.ID).First(&target).Error; err != nil {
 		return &Models{}, err
 	}
 	return &target, nil

@@ -36,6 +36,7 @@ func (r *Response) ToResponseList(list interface{}, totalRows int) {
 			TotalRows: totalRows,
 		},
 	})
+
 }
 
 func (r *Response) ToErrorResponse(err *errcode.Error) {

@@ -27,3 +27,25 @@ func (s StrTo) MustUInt32() uint32 {
 	v, _ := s.UInt32()
 	return v
 }
+
+func (s StrTo) UInt() (uint, error) {
+	v, err := strconv.Atoi(s.String())
+	return uint(v), err
+}
+
+func (s StrTo) MustUInt() uint {
+	v, _ := s.UInt()
+
+	return v
+}
+
+func (s StrTo) Float32() (float32, error) {
+	v, err := strconv.ParseFloat(s.String(), 32)
+	return float32(v), err
+}
+
+func (s StrTo) MustFloat32() float32 {
+	v, _ := s.Float32()
+
+	return v
+}
